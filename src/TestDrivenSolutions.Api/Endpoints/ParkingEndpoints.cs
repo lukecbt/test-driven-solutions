@@ -39,7 +39,7 @@ public static class ParkingEndpoints
     /// </summary>
     static async Task<Ok<IEnumerable<ParkingResponse>>> GetParking(IParkingService service)
     {
-        return TypedResults.Ok(await service.GetParking());
+        return TypedResults.Ok(await service.GetAvailableAndOccupiedSpaces());
     }
 
     /// <summary>
