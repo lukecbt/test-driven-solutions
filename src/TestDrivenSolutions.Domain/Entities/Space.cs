@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TestDrivenSolutions.Domain.Entities
+﻿namespace TestDrivenSolutions.Domain.Entities
 {
     /// <summary>
     /// Stores the occupied and free spaces where cars are allocated
@@ -10,8 +6,8 @@ namespace TestDrivenSolutions.Domain.Entities
     public record Space : Entity
     {
         public bool IsOccupied { get; set; }
-        public string? CurrentCarReg { get; set; } // Index?
-        public int? CurrentCarType { get; set; }
+        public string? CurrentVehicleReg { get; set; } // Index?
+        public int? CurrentVehicleType { get; set; }
         public DateTime? TimeIn { get; set; }
     }
 }

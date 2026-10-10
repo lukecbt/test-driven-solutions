@@ -7,8 +7,8 @@ namespace TestDrivenSolutions.Infrastructure
     {
         // Entities
         public DbSet<Space> Spaces { get; set; }
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<CarType> CarTypes { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<VehicleType> VehicleTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -20,16 +20,16 @@ namespace TestDrivenSolutions.Infrastructure
             List<Space> spaces = new();
             for (int i = 0; i < 20; i++)
             {
-                spaces.Add(new() { Id = i+1, IsOccupied = false, CurrentCarReg = null, CurrentCarType = null, TimeIn = null });
+                spaces.Add(new() { Id = i+1, IsOccupied = false, CurrentVehicleReg = null, CurrentVehicleType = null, TimeIn = null });
             }
             builder.Entity<Space>().HasData(spaces);
             // Index to search by current car reg
-            builder.Entity<Space>().HasIndex(s => s.CurrentCarReg);
+            builder.Entity<Space>().HasIndex(s => s.CurrentVehicleReg);
 
-            builder.Entity<CarType>().HasData(
-                new CarType { Id = 1, CostPerMinute = 0.10m, Description = "Small car" },
-                new CarType { Id = 2, CostPerMinute = 0.20m, Description = "Medium car" },
-                new CarType { Id = 3, CostPerMinute = 0.40m, Description = "Large car" }
+            builder.Entity<VehicleType>().HasData(
+                new VehicleType { Id = 1, CostPerMinute = 0.10m, Description = "Small car" },
+                new VehicleType { Id = 2, CostPerMinute = 0.20m, Description = "Medium car" },
+                new VehicleType { Id = 3, CostPerMinute = 0.40m, Description = "Large car" }
             );
         }
     }

@@ -20,7 +20,7 @@ namespace TestDrivenSolutions.Infrastructure.Repository
         
         public async Task<Space?> GetSpaceByVehicleRegAsync(string vehicleReg)
         {
-            return await context.Spaces.FirstOrDefaultAsync(s => s.CurrentCarReg == vehicleReg);
+            return await context.Spaces.FirstOrDefaultAsync(s => s.CurrentVehicleReg == vehicleReg);
         }
 
         public void UpdateSpace(Space space)
@@ -28,9 +28,9 @@ namespace TestDrivenSolutions.Infrastructure.Repository
             context.Spaces.Update(space);
         }
 
-        public async Task<CarType?> GetCarTypeById(int id)
+        public async Task<VehicleType?> GetCarTypeById(int id)
         {
-            return await context.CarTypes.FirstOrDefaultAsync(ct => ct.Id == id);
+            return await context.VehicleTypes.FirstOrDefaultAsync(ct => ct.Id == id);
         }
 
         public async Task<int> SaveChangesAsync()

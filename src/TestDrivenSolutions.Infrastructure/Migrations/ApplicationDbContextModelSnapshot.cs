@@ -22,74 +22,6 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.Car", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Charge")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Reg")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("TimeIn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("TimeOut")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Cars");
-                });
-
-            modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.CarType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("CostPerMinute")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CostPerMinute = 0.10m,
-                            Description = "Small car"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CostPerMinute = 0.20m,
-                            Description = "Medium car"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CostPerMinute = 0.40m,
-                            Description = "Large car"
-                        });
-                });
-
             modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.Space", b =>
                 {
                     b.Property<int>("Id")
@@ -98,10 +30,10 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CurrentCarReg")
+                    b.Property<string>("CurrentVehicleReg")
                         .HasColumnType("text");
 
-                    b.Property<int?>("CurrentCarType")
+                    b.Property<int?>("CurrentVehicleType")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsOccupied")
@@ -112,7 +44,7 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrentCarReg");
+                    b.HasIndex("CurrentVehicleReg");
 
                     b.ToTable("Spaces");
 
@@ -216,6 +148,74 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
                         {
                             Id = 20,
                             IsOccupied = false
+                        });
+                });
+
+            modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.Vehicle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Charge")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Reg")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("TimeIn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("TimeOut")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Vehicles");
+                });
+
+            modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.VehicleType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("CostPerMinute")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VehicleTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CostPerMinute = 0.10m,
+                            Description = "Small car"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CostPerMinute = 0.20m,
+                            Description = "Medium car"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CostPerMinute = 0.40m,
+                            Description = "Large car"
                         });
                 });
 #pragma warning restore 612, 618

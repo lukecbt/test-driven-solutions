@@ -92,8 +92,8 @@ public class ParkingServiceTests
         Space space = new()
         {
             Id = 1,
-            CurrentCarReg = "TESTREG",
-            CurrentCarType = 1,
+            CurrentVehicleReg = "TESTREG",
+            CurrentVehicleType = 1,
             IsOccupied = true,
             TimeIn = new DateTime(2026, 10, 10, 16, 0, 0)
         };

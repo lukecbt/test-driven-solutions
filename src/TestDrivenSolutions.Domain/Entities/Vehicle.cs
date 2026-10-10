@@ -3,7 +3,7 @@
     /// <summary>
     /// Stores information about the cars that have entered the system
     /// </summary>
-    public record Car : Entity
+    public record Vehicle : Entity
     {
         public required string Reg { get; set; }
         public int Type { get; set; }

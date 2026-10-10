@@ -114,8 +114,8 @@ public class ParkingEndpointsTests
         Space dbSpace = new()
         {
             Id = 1,
-            CurrentCarReg = "TESTREG",
-            CurrentCarType = 1,
+            CurrentVehicleReg = "TESTREG",
+            CurrentVehicleType = 1,
             IsOccupied = true,
             TimeIn = timeIn
         };
@@ -152,8 +152,8 @@ public class ParkingEndpointsTests
         Space dbSpace = new()
         {
             Id = 1,
-            CurrentCarReg = "TESTREG",
-            CurrentCarType = 2,
+            CurrentVehicleReg = "TESTREG",
+            CurrentVehicleType = 2,
             IsOccupied = true,
             TimeIn = timeIn
         };
@@ -190,8 +190,8 @@ public class ParkingEndpointsTests
         Space dbSpace = new()
         {
             Id = 1,
-            CurrentCarReg = "TESTREG",
-            CurrentCarType = 3,
+            CurrentVehicleReg = "TESTREG",
+            CurrentVehicleType = 3,
             IsOccupied = true,
             TimeIn = timeIn
         };
