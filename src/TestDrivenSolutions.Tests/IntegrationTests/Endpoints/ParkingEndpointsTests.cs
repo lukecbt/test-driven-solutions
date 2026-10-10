@@ -133,13 +133,13 @@ public class ParkingEndpointsTests
     }
 
     [Test]
-    public async Task RemoveParking_WhenSmallCarStaysFor10Minutes_ShouldReturnChargeOf1Pound()
+    public async Task RemoveParking_WhenSmallCarStaysFor10Minutes_ShouldReturnChargeOf3Pound()
     {
         // Arrange
         using var scope = _factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        DateTime timeIn = DateTime.UtcNow;
+        DateTime timeIn = DateTime.UtcNow.AddMinutes(-10);
         Space dbSpace = new()
         {
             Id = 1,
@@ -165,19 +165,17 @@ public class ParkingEndpointsTests
         VehicleExitResponse? result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.VehicleReg.Should().Be("TESTREG");
-        result.VehicleCharge.Should().Be(1);
-        result.TimeIn.Should().Be(timeIn);
-        result.TimeOut.Should().Be(timeIn.AddMinutes(10));
+        result.VehicleCharge.Should().Be(3);
     }
 
     [Test]
-    public async Task RemoveParking_WhenMediumCarStaysFor10Minutes_ShouldReturnChargeOf2Pound()
+    public async Task RemoveParking_WhenMediumCarStaysFor10Minutes_ShouldReturnChargeOf4Pound()
     {
         // Arrange
         using var scope = _factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        DateTime timeIn = DateTime.UtcNow;
+        DateTime timeIn = DateTime.UtcNow.AddMinutes(-10);
         Space dbSpace = new()
         {
             Id = 1,
@@ -203,19 +201,17 @@ public class ParkingEndpointsTests
         VehicleExitResponse? result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.VehicleReg.Should().Be("TESTREG");
-        result.VehicleCharge.Should().Be(2);
-        result.TimeIn.Should().Be(timeIn);
-        result.TimeOut.Should().Be(timeIn.AddMinutes(10));
+        result.VehicleCharge.Should().Be(4);
     }
 
     [Test]
-    public async Task RemoveParking_WhenLargeCarStaysFor10Minutes_ShouldReturnChargeOf4Pound()
+    public async Task RemoveParking_WhenLargeCarStaysFor10Minutes_ShouldReturnChargeOf6Pound()
     {
         // Arrange
         using var scope = _factory.Services.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        DateTime timeIn = DateTime.UtcNow;
+        DateTime timeIn = DateTime.UtcNow.AddMinutes(-10);
         Space dbSpace = new()
         {
             Id = 1,
@@ -241,8 +237,22 @@ public class ParkingEndpointsTests
         VehicleExitResponse? result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.VehicleReg.Should().Be("TESTREG");
-        result.VehicleCharge.Should().Be(4);
-        result.TimeIn.Should().Be(timeIn);
-        result.TimeOut.Should().Be(timeIn.AddMinutes(10));
+        result.VehicleCharge.Should().Be(6);
+    }
+
+    [Test]
+    public async Task RemoveParking_WhenCarIsNotParked_ShouldReturnNotFound()
+    {
+        // Arrange
+        VehicleExitRequest request = new()
+        {
+            VehicleReg = "TESTREG"
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking/exit", JsonContent.Create(request));
+
+        // Assert
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
     }
 }

@@ -30,7 +30,15 @@ namespace TestDrivenSolutions.Infrastructure.Repository
 
         public async Task<VehicleTypeTarrif?> GetCarTypeById(int id)
         {
-            return await context.VehicleTypeTarrifs.FirstOrDefaultAsync(ct => ct.Id == id);
+            VehicleTypeTarrif? vehicleTypeTarrif = await context.VehicleTypeTarrifs.FirstOrDefaultAsync(ct => ct.Id == id);
+
+            if (vehicleTypeTarrif is null)
+            {
+                // Assume that if no type found for specific vehicle type then default to small
+                vehicleTypeTarrif = await context.VehicleTypeTarrifs.FirstOrDefaultAsync(ct => ct.Id == 1);
+            }
+
+            return vehicleTypeTarrif;
         }
 
         public async Task<int> SaveChangesAsync()

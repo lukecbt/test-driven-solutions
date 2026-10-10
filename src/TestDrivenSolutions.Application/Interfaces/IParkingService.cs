@@ -21,6 +21,6 @@ namespace TestDrivenSolutions.Application.Interfaces
         /// </summary>
         /// <param name="request"></param>
         /// <returns>Vehicle reg, parking charge and time parked</returns>
-        Task<VehicleExitResponse> RemoveParking(VehicleExitRequest request);
+        Task<VehicleExitResponse?> RemoveParking(VehicleExitRequest request);
     }
 }

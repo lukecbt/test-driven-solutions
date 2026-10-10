@@ -53,12 +53,20 @@ public static class ParkingEndpoints
     /// <summary>
     /// POST /parking/exit: Should free up this vehicles space and return its final charge from its parking time until now
     /// </summary>
-    static async Task<Results<Ok<VehicleExitResponse>, BadRequest<string>>> RemoveParking(IParkingService service, VehicleExitRequest request)
+    static async Task<Results<Ok<VehicleExitResponse>, BadRequest<string>, NotFound<string>>> RemoveParking(IParkingService service, VehicleExitRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.VehicleReg))
         {
             return TypedResults.BadRequest("Vehicle reg is required.");
         }
-        return TypedResults.Ok(await service.RemoveParking(request));
+
+        VehicleExitResponse? response = await service.RemoveParking(request);
+
+        if (response is null)
+        {
+            return TypedResults.NotFound("Vehicle is not parked.");
+        }
+
+        return TypedResults.Ok(response);
     }
 }
