@@ -15,7 +15,7 @@ namespace TestDrivenSolutions.Infrastructure.Repository
 
         public async Task<Space?> GetFirstAvailableSpaceAsync()
         {
-            return await context.Spaces.FirstOrDefaultAsync(s => !s.IsOccupied);
+            return await context.Spaces.OrderBy(s => s.Id).FirstOrDefaultAsync(s => !s.IsOccupied);
         }        
         
         public async Task<Space?> GetSpaceByVehicleRegAsync(string vehicleReg)
