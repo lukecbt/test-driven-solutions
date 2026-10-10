@@ -28,6 +28,11 @@ namespace TestDrivenSolutions.Infrastructure.Repository
             context.Spaces.Update(space);
         }
 
+        public async Task<CarType?> GetCarTypeById(int id)
+        {
+            return await context.CarTypes.FirstOrDefaultAsync(ct => ct.Id == id);
+        }
+
         public async Task<int> SaveChangesAsync()
         {
             return await context.SaveChangesAsync();
