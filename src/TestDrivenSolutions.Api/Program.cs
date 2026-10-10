@@ -1,4 +1,5 @@
 using TestDrivenSolutions.Api.Endpoints;
+using TestDrivenSolutions.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-// TODO: Entity framework with postgres?
+// Post gres setup from infrastructure project
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 // Health check
 builder.Services.AddHealthChecks();
