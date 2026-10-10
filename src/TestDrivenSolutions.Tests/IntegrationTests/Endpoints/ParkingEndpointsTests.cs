@@ -133,7 +133,7 @@ public class ParkingEndpointsTests
     }
 
     [Test]
-    public async Task RemoveParking_WhenSmallStaysCarFor10Minutes_ShouldReturnChargeOf1Pound()
+    public async Task RemoveParking_WhenSmallCarStaysFor10Minutes_ShouldReturnChargeOf1Pound()
     {
         // Arrange
         using var scope = _factory.Services.CreateScope();
@@ -171,7 +171,7 @@ public class ParkingEndpointsTests
     }
 
     [Test]
-    public async Task RemoveParking_WhenMediumStaysCarFor10Minutes_ShouldReturnChargeOf2Pound()
+    public async Task RemoveParking_WhenMediumCarStaysFor10Minutes_ShouldReturnChargeOf2Pound()
     {
         // Arrange
         using var scope = _factory.Services.CreateScope();
