@@ -1,34 +1,31 @@
 using TestDrivenSolutions.Application.Interfaces;
 using TestDrivenSolutions.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace TestDrivenSolutions.Infrastructure.Repository
 {
     public class ParkingRepository(ApplicationDbContext context) : IParkingRepository
     {
-        // TODO: Data access logic
-        public Task<Space> AddParkingAsync(Space space)
+        public async Task<(int, int)> GetSpaceCounts()
         {
-            throw new NotImplementedException();
+            int available = await context.Spaces.CountAsync(s => !s.IsOccupied);
+            int occupied = await context.Spaces.CountAsync(s => s.IsOccupied);
+            return (available, occupied);
         }
 
-        public Task<Space> GetFirstAvailableSpaceAsync()
+        public async Task<Space?> GetFirstAvailableSpaceAsync()
         {
-            throw new NotImplementedException();
+            return await context.Spaces.FirstOrDefaultAsync(s => !s.IsOccupied);
         }
 
-        public Task<IEnumerable<Space>> GetAllSpacesAsync()
+        public void UpdateSpace(Space space)
         {
-            throw new NotImplementedException();
+            context.Spaces.Update(space);
         }
 
-        public Task RemoveParkingAsync(Space space)
+        public async Task<int> SaveChangesAsync()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task SaveChangesAsync()
-        {
-            throw new NotImplementedException();
+            return await context.SaveChangesAsync();
         }
     }
 }

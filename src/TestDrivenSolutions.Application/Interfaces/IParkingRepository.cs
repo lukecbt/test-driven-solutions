@@ -4,10 +4,9 @@ namespace TestDrivenSolutions.Application.Interfaces
 {
     public interface IParkingRepository
     {
-        Task<Space> GetFirstAvailableSpaceAsync();
-        Task<IEnumerable<Space>> GetAllSpacesAsync();
-        Task<Space> AddParkingAsync(Space space);
-        Task RemoveParkingAsync(Space space);
-        Task SaveChangesAsync();
+        Task<Space?> GetFirstAvailableSpaceAsync();
+        Task<(int, int)> GetSpaceCounts();
+        void UpdateSpace(Space space);
+        Task<int> SaveChangesAsync();
     }
 }
