@@ -113,16 +113,15 @@ public class ParkingServiceTests
     public async Task RemoveParking_WhenNoVehicleParked_ShouldReturnNull()
     {
         // Arrange
-        VehicleParkingRequest request = new()
+        VehicleExitRequest request = new()
         {
-            VehicleReg = "TESTREG",
-            VehicleType = 1
+            VehicleReg = "TESTREG"
         };
         Space? space = null;
         _mockRepository.Setup(m => m.GetSpaceByVehicleRegAsync(It.IsAny<string>())).ReturnsAsync(space);
 
         // Act
-        var result = await _service.AddParking(request);
+        var result = await _service.RemoveParking(request);
 
         // Assert
         result.Should().BeNull();

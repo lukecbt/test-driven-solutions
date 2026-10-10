@@ -67,6 +67,35 @@ public class ParkingEndpointsTests
     }
 
     [Test]
+    public async Task AddParking_WhenNoSpaces_ShouldReturnNotFound()
+    {
+        // Arrange
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        DateTime timeIn = DateTime.UtcNow;
+        List<Space> dbSpaces = new();
+        for (int i = 0; i < 20; i++)
+        {
+            dbSpaces.Add(new() { Id = i + 1, IsOccupied = true, CurrentVehicleReg = "TEST" + i, CurrentVehicleType = 1, TimeIn = timeIn });
+        }
+        context.UpdateRange(dbSpaces);
+        await context.SaveChangesAsync();
+
+        VehicleParkingRequest request = new()
+        {
+            VehicleReg = "TESTREG",
+            VehicleType = 1
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking", JsonContent.Create(request));
+
+        // Assert
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+    }
+
+    [Test]
     public async Task GetParking_WhenSuccessful_ShouldReturnAvailableAndOccupiedSpaces()
     {
         // Act

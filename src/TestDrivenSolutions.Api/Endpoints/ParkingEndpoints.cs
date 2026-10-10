@@ -25,13 +25,21 @@ public static class ParkingEndpoints
     /// <summary>
     /// POST /parking: Parks a given vehicle in the first available space and returns the vehicle and its space number
     /// </summary>
-    static async Task<Results<Ok<VehicleParkingResponse>, BadRequest<string>>> AddParking(IParkingService service, VehicleParkingRequest request)
+    static async Task<Results<Ok<VehicleParkingResponse>, BadRequest<string>, NotFound<string>>> AddParking(IParkingService service, VehicleParkingRequest request)
     {
         if (string.IsNullOrWhiteSpace(request.VehicleReg))
         {
             return TypedResults.BadRequest("Vehicle reg is required.");
         }
-        return TypedResults.Ok(await service.AddParking(request));
+
+        VehicleParkingResponse? response = await service.AddParking(request);
+
+        if (response == null)
+        {
+            return TypedResults.NotFound("No available parking spaces.");
+        }
+
+        return TypedResults.Ok(response);
     }
 
     /// <summary>

@@ -10,7 +10,7 @@ namespace TestDrivenSolutions.Application.Interfaces
         /// </summary>
         /// <param name="request"></param>
         /// <returns>Vehcle reg, parking space number and time parked</returns>
-        Task<VehicleParkingResponse> AddParking(VehicleParkingRequest request);
+        Task<VehicleParkingResponse?> AddParking(VehicleParkingRequest request);
         /// <summary>
         /// Get all available and occupied spaces
         /// </summary>
