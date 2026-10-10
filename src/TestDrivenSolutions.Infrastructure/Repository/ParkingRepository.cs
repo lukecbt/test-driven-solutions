@@ -16,7 +16,7 @@ namespace TestDrivenSolutions.Infrastructure.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Space>> GetSpacesAsync()
+        public Task<IEnumerable<Space>> GetAllSpacesAsync()
         {
             throw new NotImplementedException();
         }

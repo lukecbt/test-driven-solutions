@@ -1,6 +1,7 @@
 <Solution>
     <Project Path="TestDrivenSolutions.Api/TestDrivenSolutions.Api.csproj" />
     <Project Path="TestDrivenSolutions.Application/TestDrivenSolutions.Application.csproj" />
+    <Project Path="TestDrivenSolutions.Domain/TestDrivenSolutions.Domain.csproj" />
     <Project Path="TestDrivenSolutions.Infrastructure/TestDrivenSolutions.Infrastructure.csproj" />
     <Project Path="TestDrivenSolutions.Tests/TestDrivenSolutions.Tests.csproj" />
 </Solution>

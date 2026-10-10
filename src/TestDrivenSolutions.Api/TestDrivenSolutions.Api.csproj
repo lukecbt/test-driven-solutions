@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TestDrivenSolutions.Application\TestDrivenSolutions.Application.csproj" />
     <ProjectReference Include="..\TestDrivenSolutions.Infrastructure\TestDrivenSolutions.Infrastructure.csproj" />
   </ItemGroup>
 

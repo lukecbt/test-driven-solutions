@@ -1,5 +1,6 @@
 using TestDrivenSolutions.Api.Endpoints;
 using TestDrivenSolutions.Infrastructure;
+using TestDrivenSolutions.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddOpenApi();
 
 // Post gres setup from infrastructure project
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 // Health check
 builder.Services.AddHealthChecks();
