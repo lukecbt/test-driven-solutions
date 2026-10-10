@@ -43,7 +43,7 @@ public class ParkingEndpointsTests
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var result = JsonSerializer.Deserialize<VehicleParkingResponse>(await response.Content.ReadAsStringAsync());
+        VehicleParkingResponse result = JsonSerializer.Deserialize<VehicleParkingResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.VehicleReg.Should().Be("TESTREG");
         result.SpaceNumber.Should().Be(1);
@@ -74,7 +74,7 @@ public class ParkingEndpointsTests
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var result = JsonSerializer.Deserialize<ParkingResponse>(await response.Content.ReadAsStringAsync());
+        ParkingResponse? result = JsonSerializer.Deserialize<ParkingResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.AvailableSpaces.Should().Be(20);
         result.OccupiedSpaces.Should().Be(0);
@@ -97,7 +97,7 @@ public class ParkingEndpointsTests
         // Assert
         addParkingResponse.EnsureSuccessStatusCode();
         getParkingResponse.EnsureSuccessStatusCode();
-        var result = JsonSerializer.Deserialize<ParkingResponse>(await getParkingResponse.Content.ReadAsStringAsync());
+        ParkingResponse? result = JsonSerializer.Deserialize<ParkingResponse>(await getParkingResponse.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.AvailableSpaces.Should().Be(19);
         result.OccupiedSpaces.Should().Be(1);
@@ -133,7 +133,7 @@ public class ParkingEndpointsTests
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync());
+        VehicleExitResponse? result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.VehicleReg.Should().Be("TESTREG");
         result.VehicleCharge.Should().Be(1);
@@ -171,7 +171,7 @@ public class ParkingEndpointsTests
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync());
+        VehicleExitResponse? result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.VehicleReg.Should().Be("TESTREG");
         result.VehicleCharge.Should().Be(2);
@@ -209,7 +209,7 @@ public class ParkingEndpointsTests
 
         // Assert
         response.EnsureSuccessStatusCode();
-        var result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync());
+        VehicleExitResponse? result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
         result.Should().NotBeNull();
         result.VehicleReg.Should().Be("TESTREG");
         result.VehicleCharge.Should().Be(4);

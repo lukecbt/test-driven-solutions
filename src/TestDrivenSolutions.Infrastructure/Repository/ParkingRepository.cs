@@ -6,7 +6,7 @@ namespace TestDrivenSolutions.Infrastructure.Repository
 {
     public class ParkingRepository(ApplicationDbContext context) : IParkingRepository
     {
-        public async Task<(int, int)> GetSpaceCounts()
+        public async Task<(int, int)> GetSpaceCountsAsync()
         {
             int available = await context.Spaces.CountAsync(s => !s.IsOccupied);
             int occupied = await context.Spaces.CountAsync(s => s.IsOccupied);
@@ -16,6 +16,11 @@ namespace TestDrivenSolutions.Infrastructure.Repository
         public async Task<Space?> GetFirstAvailableSpaceAsync()
         {
             return await context.Spaces.FirstOrDefaultAsync(s => !s.IsOccupied);
+        }        
+        
+        public async Task<Space?> GetSpaceByVehicleRegAsync(string vehicleReg)
+        {
+            return await context.Spaces.FirstOrDefaultAsync(s => s.CurrentCarReg == vehicleReg);
         }
 
         public void UpdateSpace(Space space)

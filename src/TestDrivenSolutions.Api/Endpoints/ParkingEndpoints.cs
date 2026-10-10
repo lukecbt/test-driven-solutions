@@ -37,7 +37,7 @@ public static class ParkingEndpoints
     /// <summary>
     /// GET /parking: Gets available and occupied number of spaces
     /// </summary>
-    static async Task<Ok<IEnumerable<ParkingResponse>>> GetParking(IParkingService service)
+    static async Task<Ok<ParkingResponse>> GetParking(IParkingService service)
     {
         return TypedResults.Ok(await service.GetAvailableAndOccupiedSpaces());
     }
