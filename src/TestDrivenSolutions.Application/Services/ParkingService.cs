@@ -13,9 +13,15 @@ namespace TestDrivenSolutions.Application.Services
         }
 
         // <inheritdoc/>
-        public Task<IEnumerable<ParkingResponse>> GetAvailableAndOccupiedSpaces()
+        public async Task<ParkingResponse> GetAvailableAndOccupiedSpaces()
         {
-            throw new NotImplementedException();
+            var (available, occupied) = await repository.GetSpaceCountsAsync();
+
+            return new()
+            {
+                AvailableSpaces = available,
+                OccupiedSpaces = occupied
+            };
         }
 
         // <inheritdoc/>

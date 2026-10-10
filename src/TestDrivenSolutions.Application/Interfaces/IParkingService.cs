@@ -15,7 +15,7 @@ namespace TestDrivenSolutions.Application.Interfaces
         /// Get all available and occupied spaces
         /// </summary>
         /// <returns>Count of available and occupied spaces</returns>
-        Task<IEnumerable<ParkingResponse>> GetAvailableAndOccupiedSpaces();
+        Task<ParkingResponse> GetAvailableAndOccupiedSpaces();
         /// <summary>
         /// Remove a vehicle from an occupied space by vehicle reg
         /// </summary>
