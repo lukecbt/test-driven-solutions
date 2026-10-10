@@ -180,13 +180,19 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
                     b.ToTable("Vehicles");
                 });
 
-            modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.VehicleType", b =>
+            modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.VehicleTypeTarrif", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AdditionalChargeAmount")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("AdditionalChargeMinutes")
+                        .HasColumnType("integer");
 
                     b.Property<decimal>("CostPerMinute")
                         .HasColumnType("numeric");
@@ -196,24 +202,30 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VehicleTypes");
+                    b.ToTable("VehicleTypeTarrifs");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            AdditionalChargeAmount = 1m,
+                            AdditionalChargeMinutes = 5,
                             CostPerMinute = 0.10m,
                             Description = "Small car"
                         },
                         new
                         {
                             Id = 2,
+                            AdditionalChargeAmount = 1m,
+                            AdditionalChargeMinutes = 5,
                             CostPerMinute = 0.20m,
                             Description = "Medium car"
                         },
                         new
                         {
                             Id = 3,
+                            AdditionalChargeAmount = 1m,
+                            AdditionalChargeMinutes = 5,
                             CostPerMinute = 0.40m,
                             Description = "Large car"
                         });

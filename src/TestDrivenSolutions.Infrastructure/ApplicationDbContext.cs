@@ -8,7 +8,7 @@ namespace TestDrivenSolutions.Infrastructure
         // Entities
         public DbSet<Space> Spaces { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
-        public DbSet<VehicleType> VehicleTypes { get; set; }
+        public DbSet<VehicleTypeTarrif> VehicleTypeTarrifs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -26,10 +26,10 @@ namespace TestDrivenSolutions.Infrastructure
             // Index to search by current car reg
             builder.Entity<Space>().HasIndex(s => s.CurrentVehicleReg);
 
-            builder.Entity<VehicleType>().HasData(
-                new VehicleType { Id = 1, CostPerMinute = 0.10m, Description = "Small car" },
-                new VehicleType { Id = 2, CostPerMinute = 0.20m, Description = "Medium car" },
-                new VehicleType { Id = 3, CostPerMinute = 0.40m, Description = "Large car" }
+            builder.Entity<VehicleTypeTarrif>().HasData(
+                new VehicleTypeTarrif { Id = 1, CostPerMinute = 0.10m, AdditionalChargeMinutes = 5, AdditionalChargeAmount = 1, Description = "Small car" },
+                new VehicleTypeTarrif { Id = 2, CostPerMinute = 0.20m, AdditionalChargeMinutes = 5, AdditionalChargeAmount = 1, Description = "Medium car" },
+                new VehicleTypeTarrif { Id = 3, CostPerMinute = 0.40m, AdditionalChargeMinutes = 5, AdditionalChargeAmount = 1, Description = "Large car" }
             );
         }
     }

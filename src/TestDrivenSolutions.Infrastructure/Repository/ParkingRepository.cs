@@ -28,9 +28,9 @@ namespace TestDrivenSolutions.Infrastructure.Repository
             context.Spaces.Update(space);
         }
 
-        public async Task<VehicleType?> GetCarTypeById(int id)
+        public async Task<VehicleTypeTarrif?> GetCarTypeById(int id)
         {
-            return await context.VehicleTypes.FirstOrDefaultAsync(ct => ct.Id == id);
+            return await context.VehicleTypeTarrifs.FirstOrDefaultAsync(ct => ct.Id == id);
         }
 
         public async Task<int> SaveChangesAsync()
