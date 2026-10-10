@@ -95,7 +95,7 @@ public class ParkingServiceTests
             CurrentCarReg = "TESTREG",
             CurrentCarType = 1,
             IsOccupied = true,
-            ParkingStartedTime = new DateTime(2026, 10, 10, 16, 0, 0)
+            TimeIn = new DateTime(2026, 10, 10, 16, 0, 0)
         };
         _mockRepository.Setup(m => m.GetSpaceByVehicleRegAsync(It.IsAny<string>())).ReturnsAsync(space);
         _mockRepository.Setup(m => m.UpdateSpace(It.IsAny<Space>()));

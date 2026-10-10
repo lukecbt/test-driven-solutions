@@ -117,7 +117,7 @@ public class ParkingEndpointsTests
             CurrentCarReg = "TESTREG",
             CurrentCarType = 1,
             IsOccupied = true,
-            ParkingStartedTime = timeIn
+            TimeIn = timeIn
         };
 
         context.Update(dbSpace);
@@ -155,7 +155,7 @@ public class ParkingEndpointsTests
             CurrentCarReg = "TESTREG",
             CurrentCarType = 2,
             IsOccupied = true,
-            ParkingStartedTime = timeIn
+            TimeIn = timeIn
         };
 
         context.Update(dbSpace);
@@ -193,7 +193,7 @@ public class ParkingEndpointsTests
             CurrentCarReg = "TESTREG",
             CurrentCarType = 3,
             IsOccupied = true,
-            ParkingStartedTime = timeIn
+            TimeIn = timeIn
         };
 
         context.Update(dbSpace);

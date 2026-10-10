@@ -20,7 +20,7 @@ namespace TestDrivenSolutions.Infrastructure
             List<Space> spaces = new();
             for (int i = 0; i < 20; i++)
             {
-                spaces.Add(new() { Id = i+1, IsOccupied = false, CurrentCarReg = null, CurrentCarType = null, ParkingStartedTime = null });
+                spaces.Add(new() { Id = i+1, IsOccupied = false, CurrentCarReg = null, CurrentCarType = null, TimeIn = null });
             }
             builder.Entity<Space>().HasData(spaces);
             // Index to search by current car reg

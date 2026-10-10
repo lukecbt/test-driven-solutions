@@ -30,18 +30,18 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<decimal>("Charge")
                         .HasColumnType("numeric");
-
-                    b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Reg")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("TimeIn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("TimeOut")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
@@ -107,7 +107,7 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
                     b.Property<bool>("IsOccupied")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime?>("ParkingStartedTime")
+                    b.Property<DateTime?>("TimeIn")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");

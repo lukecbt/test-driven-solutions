@@ -12,6 +12,6 @@ namespace TestDrivenSolutions.Domain.Entities
         public bool IsOccupied { get; set; }
         public string? CurrentCarReg { get; set; } // Index?
         public int? CurrentCarType { get; set; }
-        public DateTime? ParkingStartedTime { get; set; }
+        public DateTime? TimeIn { get; set; }
     }
 }
