@@ -112,6 +112,8 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CurrentCarReg");
+
                     b.ToTable("Spaces");
 
                     b.HasData(

@@ -23,6 +23,8 @@ namespace TestDrivenSolutions.Infrastructure
                 spaces.Add(new() { Id = i+1, IsOccupied = false, CurrentCarReg = null, CurrentCarType = null, ParkingStartedTime = null });
             }
             builder.Entity<Space>().HasData(spaces);
+            // Index to search by current car reg
+            builder.Entity<Space>().HasIndex(s => s.CurrentCarReg);
 
             builder.Entity<CarType>().HasData(
                 new CarType { Id = 1, CostPerMinute = 0.10m, Description = "Small car" },
