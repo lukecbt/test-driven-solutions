@@ -23,3 +23,21 @@ docker run -p 8080:8080 test-driven-solutions
 ### Health Check
 
 Check the health check at "/health"
+
+## Database
+
+### Apply Migrations
+
+Apply current migrations to the configured database via package manager console (select TestDrivenSolutions.Infrastructure as default project)
+
+```
+Update-Database
+```
+
+### Connection String
+
+Example local connection string:
+
+```
+Host=localhost;Port=5432;Database=parkingdb;Username=postgres;Password=
+```
