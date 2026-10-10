@@ -1,17 +1,219 @@
-using NUnit.Framework;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Json;
+using System.Text.Json;
+using TestDrivenSolutions.Application.Models.Request;
+using TestDrivenSolutions.Application.Models.Response;
+using TestDrivenSolutions.Domain.Entities;
+using TestDrivenSolutions.Infrastructure;
 
 namespace TestDrivenSolutions.Tests.IntegrationTests.Endpoints;
 
 public class ParkingEndpointsTests
 {
+    private CustomWebApplicationFactory<Program> _factory;
+    private HttpClient _client;
+
     [SetUp]
     public void Setup()
     {
+        _factory = new();
+        _client = _factory.CreateClient();
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        _factory.Dispose();
+        _client.Dispose();
     }
 
     [Test]
-    public void Test1()
+    public async Task AddParking_WhenSuccessful_ShouldReturnRegAndSpaceNumber()
     {
-        Assert.Pass();
+        // Arrange
+        VehicleParkingRequest request = new()
+        {
+            VehicleReg = "TESTREG",
+            VehicleType = 1
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking", JsonContent.Create(request));
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var result = JsonSerializer.Deserialize<VehicleParkingResponse>(await response.Content.ReadAsStringAsync());
+        result.Should().NotBeNull();
+        result.VehicleReg.Should().Be("TESTREG");
+        result.SpaceNumber.Should().Be(1);
+    }
+
+    [Test]
+    public async Task AddParking_WhenNoVehicleReg_ShouldReturnBadRequest()
+    {
+        // Arrange
+        VehicleParkingRequest request = new()
+        {
+            VehicleReg = "",
+            VehicleType = 1
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking", JsonContent.Create(request));
+
+        // Assert
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+    }
+
+    [Test]
+    public async Task GetParking_WhenSuccessful_ShouldReturnAvailableAndOccupiedSpaces()
+    {
+        // Act
+        var response = await _client.GetAsync("/parking");
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var result = JsonSerializer.Deserialize<ParkingResponse>(await response.Content.ReadAsStringAsync());
+        result.Should().NotBeNull();
+        result.AvailableSpaces.Should().Be(20);
+        result.OccupiedSpaces.Should().Be(0);
+    }
+
+    [Test]
+    public async Task GetParking_WhenOneParkingIsAdded_ShouldReturn1OccupiedSpace()
+    {
+        // Arrange
+        VehicleParkingRequest request = new()
+        {
+            VehicleReg = "TESTREG",
+            VehicleType = 1
+        };
+
+        // Act
+        var addParkingResponse = await _client.PostAsync("/parking", JsonContent.Create(request));
+        var getParkingResponse = await _client.GetAsync("/parking");
+
+        // Assert
+        addParkingResponse.EnsureSuccessStatusCode();
+        getParkingResponse.EnsureSuccessStatusCode();
+        var result = JsonSerializer.Deserialize<ParkingResponse>(await getParkingResponse.Content.ReadAsStringAsync());
+        result.Should().NotBeNull();
+        result.AvailableSpaces.Should().Be(19);
+        result.OccupiedSpaces.Should().Be(1);
+    }
+
+    [Test]
+    public async Task RemoveParking_WhenSmallStaysCarFor10Minutes_ShouldReturnChargeOf1Pound()
+    {
+        // Arrange
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        DateTime timeIn = DateTime.UtcNow;
+        Space dbSpace = new()
+        {
+            Id = 1,
+            CurrentCarReg = "TESTREG",
+            CurrentCarType = 1,
+            IsOccupied = true,
+            ParkingStartedTime = timeIn
+        };
+
+        context.Update(dbSpace);
+        await context.SaveChangesAsync();
+
+        VehicleExitRequest request = new()
+        {
+            VehicleReg = "TESTREG"
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking/exit", JsonContent.Create(request));
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync());
+        result.Should().NotBeNull();
+        result.VehicleReg.Should().Be("TESTREG");
+        result.VehicleCharge.Should().Be(1);
+        result.TimeIn.Should().Be(timeIn);
+        result.TimeOut.Should().Be(timeIn.AddMinutes(10));
+    }
+
+    [Test]
+    public async Task RemoveParking_WhenMediumStaysCarFor10Minutes_ShouldReturnChargeOf2Pound()
+    {
+        // Arrange
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        DateTime timeIn = DateTime.UtcNow;
+        Space dbSpace = new()
+        {
+            Id = 1,
+            CurrentCarReg = "TESTREG",
+            CurrentCarType = 2,
+            IsOccupied = true,
+            ParkingStartedTime = timeIn
+        };
+
+        context.Update(dbSpace);
+        await context.SaveChangesAsync();
+
+        VehicleExitRequest request = new()
+        {
+            VehicleReg = "TESTREG"
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking/exit", JsonContent.Create(request));
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync());
+        result.Should().NotBeNull();
+        result.VehicleReg.Should().Be("TESTREG");
+        result.VehicleCharge.Should().Be(2);
+        result.TimeIn.Should().Be(timeIn);
+        result.TimeOut.Should().Be(timeIn.AddMinutes(10));
+    }
+
+    [Test]
+    public async Task RemoveParking_WhenLargeCarStaysFor10Minutes_ShouldReturnChargeOf4Pound()
+    {
+        // Arrange
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        DateTime timeIn = DateTime.UtcNow;
+        Space dbSpace = new()
+        {
+            Id = 1,
+            CurrentCarReg = "TESTREG",
+            CurrentCarType = 3,
+            IsOccupied = true,
+            ParkingStartedTime = timeIn
+        };
+
+        context.Update(dbSpace);
+        await context.SaveChangesAsync();
+
+        VehicleExitRequest request = new()
+        {
+            VehicleReg = "TESTREG"
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking/exit", JsonContent.Create(request));
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var result = JsonSerializer.Deserialize<VehicleExitResponse>(await response.Content.ReadAsStringAsync());
+        result.Should().NotBeNull();
+        result.VehicleReg.Should().Be("TESTREG");
+        result.VehicleCharge.Should().Be(4);
+        result.TimeIn.Should().Be(timeIn);
+        result.TimeOut.Should().Be(timeIn.AddMinutes(10));
     }
 }

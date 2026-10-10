@@ -9,3 +9,9 @@
 - Price calculation?
 - Error handling
 - Tests
+
+- repo
+- GetSpacesAsync - returns all spaces (occupied and available)
+- AddParking - updates the first available space with the vehicle and returns the space (number, timein, reg)
+- RemoveParking - updates the space registered to the vehicle and removes it (stores the vehicle details?)
+- save changes async
