@@ -8,7 +8,7 @@ namespace TestDrivenSolutions.Application.Interfaces
         Task<Space?> GetSpaceByVehicleRegAsync(string vehicleReg);
         Task<(int, int)> GetSpaceCountsAsync();
         void UpdateSpace(Space space);
-        Task<VehicleType?> GetCarTypeById(int id);
+        Task<VehicleTypeTarrif?> GetCarTypeById(int id);
         Task<int> SaveChangesAsync();
     }
 }
