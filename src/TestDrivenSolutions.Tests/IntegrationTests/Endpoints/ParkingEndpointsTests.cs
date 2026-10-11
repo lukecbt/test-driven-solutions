@@ -93,7 +93,24 @@ public class ParkingEndpointsTests
     }
 
     [Test]
-    public async Task AddParking_WhenNoSpaces_ShouldReturnNotFound()
+    public async Task AddParking_WhenInvalidVehicleType_ShouldReturnBadRequest()
+    {
+        // Arrange
+        VehicleParkingRequest request = new()
+        {
+            VehicleReg = "TESTREG",
+            VehicleType = 4
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking", JsonContent.Create(request));
+
+        // Assert
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+    }
+
+    [Test]
+    public async Task AddParking_WhenNoSpaces_ShouldReturnBadRequest()
     {
         // Arrange
         using var scope = _factory.Services.CreateScope();
@@ -118,7 +135,32 @@ public class ParkingEndpointsTests
         var response = await _client.PostAsync("/parking", JsonContent.Create(request));
 
         // Assert
-        response.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+    }
+
+    [Test]
+    public async Task AddParking_WhenVehicleAlreadyParked_ShouldReturnBadRequest()
+    {
+        // Arrange
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        DateTime timeIn = DateTime.UtcNow;
+        Space space = new() { Id = 1, IsOccupied = true, CurrentVehicleReg = "TESTREG", CurrentVehicleType = 1, TimeIn = timeIn };
+        context.Update(space);
+        await context.SaveChangesAsync();
+
+        VehicleParkingRequest request = new()
+        {
+            VehicleReg = "TESTREG",
+            VehicleType = 1
+        };
+
+        // Act
+        var response = await _client.PostAsync("/parking", JsonContent.Create(request));
+
+        // Assert
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
     }
 
     [Test]

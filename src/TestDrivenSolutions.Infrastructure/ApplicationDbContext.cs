@@ -7,7 +7,6 @@ namespace TestDrivenSolutions.Infrastructure
     {
         // Entities
         public DbSet<Space> Spaces { get; set; }
-        public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleTypeTarrif> VehicleTypeTarrifs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -14,8 +14,6 @@ namespace TestDrivenSolutions.Infrastructure
             // Add PostgreSQL database
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
-            // TODO: maybe switch to in memory for ease of running
-
             // Register repos
             services.AddScoped<IParkingRepository, ParkingRepository>();
 

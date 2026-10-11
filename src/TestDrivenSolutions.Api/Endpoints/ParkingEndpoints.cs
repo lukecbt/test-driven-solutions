@@ -13,8 +13,6 @@ public static class ParkingEndpoints
   /// <param name="app"></param>
   public static void RegisterParkingEndpoints(this WebApplication app)
   {
-        // TODO: exception handler?
-
         var group = app.MapGroup("/parking");
 
         group.MapPost("/", AddParking);
@@ -25,18 +23,23 @@ public static class ParkingEndpoints
     /// <summary>
     /// POST /parking: Parks a given vehicle in the first available space and returns the vehicle and its space number
     /// </summary>
-    static async Task<Results<Ok<VehicleParkingResponse>, BadRequest<string>, NotFound<string>>> AddParking(IParkingService service, VehicleParkingRequest request, CancellationToken ct)
+    static async Task<Results<Ok<VehicleParkingResponse>, BadRequest<string>>> AddParking(IParkingService service, VehicleParkingRequest request, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(request.VehicleReg))
         {
             return TypedResults.BadRequest("Vehicle reg is required.");
         }
 
+        if (request.VehicleType != 1 && request.VehicleType != 2 && request.VehicleType != 3)
+        {
+            return TypedResults.BadRequest("Invalid vehicle type.");
+        }
+
         VehicleParkingResponse? response = await service.AddParking(request, ct);
 
         if (response == null)
         {
-            return TypedResults.NotFound("No available parking spaces.");
+            return TypedResults.BadRequest("Cannot allocate vehicle, no spaces or vehicle already parked.");
         }
 
         return TypedResults.Ok(response);

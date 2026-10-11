@@ -11,7 +11,15 @@ namespace TestDrivenSolutions.Application.Services
         // <inheritdoc/>
         public async Task<VehicleParkingResponse?> AddParking(VehicleParkingRequest request, CancellationToken ct)
         {
-            Space? space = await repository.GetFirstAvailableSpaceAsync(ct);
+            Space? space = await repository.GetSpaceByVehicleRegAsync(request.VehicleReg, ct);
+
+            if (space is not null)
+            {
+                // Vehicle already parked, handle error client side
+                return null;
+            }
+
+            space = await repository.GetFirstAvailableSpaceAsync(ct);
 
             if (space is null)
             {

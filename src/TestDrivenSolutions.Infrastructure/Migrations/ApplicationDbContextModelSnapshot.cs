@@ -151,35 +151,6 @@ namespace TestDrivenSolutions.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.Vehicle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Charge")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Reg")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("TimeIn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("TimeOut")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vehicles");
-                });
-
             modelBuilder.Entity("TestDrivenSolutions.Domain.Entities.VehicleTypeTarrif", b =>
                 {
                     b.Property<int>("Id")
