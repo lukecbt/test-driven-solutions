@@ -27,7 +27,7 @@ public class ParkingServiceTests
         _mockRepository.Setup(m => m.GetSpaceCountsAsync()).ReturnsAsync((available, occupied));
 
         // Act
-        var result = await _service.GetAvailableAndOccupiedSpaces();
+        var result = await _service.GetAvailableAndOccupiedSpaces(CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull();
@@ -52,7 +52,7 @@ public class ParkingServiceTests
         _mockRepository.Setup(m => m.UpdateSpace(It.IsAny<Space>()));
 
         // Act
-        var result = await _service.AddParking(request);
+        var result = await _service.AddParking(request, CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull();
@@ -74,7 +74,7 @@ public class ParkingServiceTests
         _mockRepository.Setup(m => m.GetFirstAvailableSpaceAsync()).ReturnsAsync(space);
 
         // Act
-        var result = await _service.AddParking(request);
+        var result = await _service.AddParking(request, CancellationToken.None);
 
         // Assert
         result.Should().BeNull();
@@ -101,7 +101,7 @@ public class ParkingServiceTests
         _mockRepository.Setup(m => m.UpdateSpace(It.IsAny<Space>()));
 
         // Act
-        var result = await _service.RemoveParking(request);
+        var result = await _service.RemoveParking(request, CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull();
@@ -121,7 +121,7 @@ public class ParkingServiceTests
         _mockRepository.Setup(m => m.GetSpaceByVehicleRegAsync(It.IsAny<string>())).ReturnsAsync(space);
 
         // Act
-        var result = await _service.RemoveParking(request);
+        var result = await _service.RemoveParking(request, CancellationToken.None);
 
         // Assert
         result.Should().BeNull();

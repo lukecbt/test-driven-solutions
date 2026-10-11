@@ -9,9 +9,9 @@ namespace TestDrivenSolutions.Application.Services
     public class ParkingService(IParkingRepository repository) : IParkingService
     {
         // <inheritdoc/>
-        public async Task<VehicleParkingResponse?> AddParking(VehicleParkingRequest request)
+        public async Task<VehicleParkingResponse?> AddParking(VehicleParkingRequest request, CancellationToken ct)
         {
-            Space? space = await repository.GetFirstAvailableSpaceAsync();
+            Space? space = await repository.GetFirstAvailableSpaceAsync(ct);
 
             if (space is null)
             {
@@ -28,7 +28,7 @@ namespace TestDrivenSolutions.Application.Services
             space.TimeIn = timeIn;
 
             repository.UpdateSpace(space);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync(ct);
 
             // Return successfully parked car information
             return new()
@@ -40,9 +40,9 @@ namespace TestDrivenSolutions.Application.Services
         }
 
         // <inheritdoc/>
-        public async Task<ParkingResponse> GetAvailableAndOccupiedSpaces()
+        public async Task<ParkingResponse> GetAvailableAndOccupiedSpaces(CancellationToken ct)
         {
-            var (available, occupied) = await repository.GetSpaceCountsAsync();
+            var (available, occupied) = await repository.GetSpaceCountsAsync(ct);
 
             return new()
             {
@@ -52,9 +52,9 @@ namespace TestDrivenSolutions.Application.Services
         }
 
         // <inheritdoc/>
-        public async Task<VehicleExitResponse?> RemoveParking(VehicleExitRequest request)
+        public async Task<VehicleExitResponse?> RemoveParking(VehicleExitRequest request, CancellationToken ct)
         {
-            Space? space = await repository.GetSpaceByVehicleRegAsync(request.VehicleReg);
+            Space? space = await repository.GetSpaceByVehicleRegAsync(request.VehicleReg, ct);
 
             if (space is null || space.TimeIn is null || space.CurrentVehicleType is null)
             {
@@ -66,7 +66,7 @@ namespace TestDrivenSolutions.Application.Services
             DateTime timeIn = space.TimeIn.Value;
             DateTime timeOut = DateTime.UtcNow;
             int vehicleTypeId = space.CurrentVehicleType.Value;
-            VehicleTypeTarrif? vehicleTypeTarrif = await repository.GetCarTypeById(vehicleTypeId);
+            VehicleTypeTarrif? vehicleTypeTarrif = await repository.GetCarTypeById(vehicleTypeId, ct);
 
             // Cacluation parking charge, add catch all if database is not set up, we need to calculate based on base charge
             decimal parkingCharge = CalculationHelper.CalculateParkingCharge(timeIn, timeOut, vehicleTypeTarrif?.CostPerMinute ?? 0.1m, vehicleTypeTarrif?.AdditionalChargeMinutes ?? 5, vehicleTypeTarrif?.AdditionalChargeAmount ?? 1);
@@ -78,7 +78,7 @@ namespace TestDrivenSolutions.Application.Services
             space.TimeIn = null;
 
             repository.UpdateSpace(space);
-            await repository.SaveChangesAsync();
+            await repository.SaveChangesAsync(ct);
 
             return new()
             {

@@ -25,14 +25,14 @@ public static class ParkingEndpoints
     /// <summary>
     /// POST /parking: Parks a given vehicle in the first available space and returns the vehicle and its space number
     /// </summary>
-    static async Task<Results<Ok<VehicleParkingResponse>, BadRequest<string>, NotFound<string>>> AddParking(IParkingService service, VehicleParkingRequest request)
+    static async Task<Results<Ok<VehicleParkingResponse>, BadRequest<string>, NotFound<string>>> AddParking(IParkingService service, VehicleParkingRequest request, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(request.VehicleReg))
         {
             return TypedResults.BadRequest("Vehicle reg is required.");
         }
 
-        VehicleParkingResponse? response = await service.AddParking(request);
+        VehicleParkingResponse? response = await service.AddParking(request, ct);
 
         if (response == null)
         {
@@ -45,22 +45,22 @@ public static class ParkingEndpoints
     /// <summary>
     /// GET /parking: Gets available and occupied number of spaces
     /// </summary>
-    static async Task<Ok<ParkingResponse>> GetParking(IParkingService service)
+    static async Task<Ok<ParkingResponse>> GetParking(IParkingService service, CancellationToken ct)
     {
-        return TypedResults.Ok(await service.GetAvailableAndOccupiedSpaces());
+        return TypedResults.Ok(await service.GetAvailableAndOccupiedSpaces(ct));
     }
 
     /// <summary>
     /// POST /parking/exit: Should free up this vehicles space and return its final charge from its parking time until now
     /// </summary>
-    static async Task<Results<Ok<VehicleExitResponse>, BadRequest<string>, NotFound<string>>> RemoveParking(IParkingService service, VehicleExitRequest request)
+    static async Task<Results<Ok<VehicleExitResponse>, BadRequest<string>, NotFound<string>>> RemoveParking(IParkingService service, VehicleExitRequest request, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(request.VehicleReg))
         {
             return TypedResults.BadRequest("Vehicle reg is required.");
         }
 
-        VehicleExitResponse? response = await service.RemoveParking(request);
+        VehicleExitResponse? response = await service.RemoveParking(request, ct);
 
         if (response is null)
         {

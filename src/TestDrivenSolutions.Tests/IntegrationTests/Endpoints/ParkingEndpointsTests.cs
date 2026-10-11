@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -26,6 +27,31 @@ public class ParkingEndpointsTests
     {
         _factory.Dispose();
         _client.Dispose();
+    }
+
+    [Test]
+    public async Task AddParking_WhenExceptionIsThrown_ShouldReturnSanitisedInternalServerError()
+    {
+        // Arrange
+        VehicleParkingRequest request = new()
+        {
+            VehicleReg = "TESTREG",
+            VehicleType = 1
+        };
+
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        context.Database.EnsureDeleted();
+
+        // Act
+        var response = await _client.PostAsync("/parking", JsonContent.Create(request));
+
+        // Assert
+        response.StatusCode.Should().Be(System.Net.HttpStatusCode.InternalServerError);
+        ProblemDetails result = JsonSerializer.Deserialize<ProblemDetails>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        result.Should().NotBeNull();
+        result.Title.Should().Be("Internal Server Error");
+        result.Detail.Should().Be("An unexpected error occurred.");
     }
 
     [Test]

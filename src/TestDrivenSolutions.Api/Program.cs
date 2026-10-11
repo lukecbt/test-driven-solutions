@@ -1,6 +1,7 @@
 using TestDrivenSolutions.Api.Endpoints;
-using TestDrivenSolutions.Infrastructure;
+using TestDrivenSolutions.Api.Handlers;
 using TestDrivenSolutions.Application;
+using TestDrivenSolutions.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
+// Add exception handling
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ExceptionHandler>();
+
 // Health check
 builder.Services.AddHealthChecks();
 
@@ -22,6 +27,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseExceptionHandler();
 
 // Set simple health check
 app.MapHealthChecks("/health");

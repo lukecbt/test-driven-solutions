@@ -10,17 +10,17 @@ namespace TestDrivenSolutions.Application.Interfaces
         /// </summary>
         /// <param name="request"></param>
         /// <returns>Vehcle reg, parking space number and time parked</returns>
-        Task<VehicleParkingResponse?> AddParking(VehicleParkingRequest request);
+        Task<VehicleParkingResponse?> AddParking(VehicleParkingRequest request, CancellationToken ct);
         /// <summary>
         /// Get all available and occupied spaces
         /// </summary>
         /// <returns>Count of available and occupied spaces</returns>
-        Task<ParkingResponse> GetAvailableAndOccupiedSpaces();
+        Task<ParkingResponse> GetAvailableAndOccupiedSpaces(CancellationToken ct);
         /// <summary>
         /// Remove a vehicle from an occupied space by vehicle reg
         /// </summary>
         /// <param name="request"></param>
         /// <returns>Vehicle reg, parking charge and time parked</returns>
-        Task<VehicleExitResponse?> RemoveParking(VehicleExitRequest request);
+        Task<VehicleExitResponse?> RemoveParking(VehicleExitRequest request, CancellationToken ct);
     }
 }
